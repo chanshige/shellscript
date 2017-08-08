@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+readonly HOSTS_FILE="/private/etc/hosts"
+
+function information()
+{
+  echo -e "\033[1;32mHosts File changer 2016\033[m";
+  exit 1
+}
+
+function usage() {
+  cat << EOT
+Usage: ${0} [options] <ipAddr> <hostname>
+
+  -v        Print the version and exit.
+  -h        Print this help.
+
+Options:
+  -i        Information.
+  -l        Registered Hosts.
+  -a        Add Hosts.
+  -r        Remove Hosts.
+EOT
+  exit 1
+}
+
+while getopts ar:ilhv OPTION
+do
+  case "${OPTION}" in
+   i)
+    information
+   ;;
+   l)
+    echo "$(sudo cat ${HOSTS_FILE})"
+   ;;
+   a)
+    if [ "$(sudo grep ${2} ${HOSTS_FILE})" ]; then
+      echo "${2} is already registered."
+      exit 0
+    fi
+    echo -n "Add "
+    echo "${2}  ${3}" | sudo tee -a ${HOSTS_FILE}
+   ;;
+   r)
+    if [ "$(sudo grep ${2} ${HOSTS_FILE})" ]; then
+      sudo sed -i -e "/${2}/d" ${HOSTS_FILE}
+      echo "${2} Remove."
+      exit 0
+    fi
+    echo "${2} No."
+    exit 1
+   ;;
+   h)
+    usage
+   ;;
+   v)
+    echo "v0.0.1"
+    exit 1
+   ;;
+   \?) exit 1
+   ;;
+  esac
+done
