@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+echo "|fqdn|type|record|"
+echo "|----|----|------|"
+for arg in $@;do
+  ANSWER_SECTION=`dig ${arg} +noall +ans|awk 'NR==4{print "|"$1 "|" $4 "|" $5 "|";}'`
+  if [ -n "${ANSWER_SECTION}" ]; then echo ${ANSWER_SECTION}; else echo "|${arg} | | |"; fi
+done
