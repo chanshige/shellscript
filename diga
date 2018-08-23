@@ -2,6 +2,6 @@
 echo "|fqdn|type|record|"
 echo "|----|----|------|"
 for arg in $@;do
-  ANSWER_SECTION=`dig ${arg} +noall +ans|awk 'NR==4{print "|"$1 "|" $4 "|" $5 "|";}'`
-  if [ -n "${ANSWER_SECTION}" ]; then echo ${ANSWER_SECTION}; else echo "|${arg} | | |"; fi
+  ANSWER_SECTION=`dig ${arg} any +noall +ans|awk 'NR>4{printf "|" $1 "|" $4 "|"; {for(i=5; i<=NF; i++) printf $i " ";} print "|";}'`
+  if [ -n "${ANSWER_SECTION}" ]; then echo "${ANSWER_SECTION}" ; else echo "|${arg} | | |"; fi
 done
