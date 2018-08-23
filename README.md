@@ -18,7 +18,7 @@ Options:
 ## diga
 digコマンドでANSWER SECTION結果をmarkdownの表で出力
 ```
-% ./diga shigeki.tokyo 
+% ./diga shigeki.tokyo shigeki.shop
 |fqdn|type|record|
 |----|----|------|
 |shigeki.tokyo.|NS|01.dnsv.jp. |
